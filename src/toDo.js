@@ -42,7 +42,6 @@ class ToDoList {
       if (e.key === 'Enter') {
         taskObj.description = inputDescription.value;
         self.updateList(taskObj);
-        //localStorage.setItem('toDoList', JSON.stringify(self.data));//local storage function
         handlers.taskList.innerHTML = '';
         self.displayList();
       }
@@ -51,7 +50,7 @@ class ToDoList {
 
   addTask(task) {
     this.data.push(task);
-    localStorage.setItem('toDoList', JSON.stringify(this.data));//local storage function
+    localStorage.setItem('toDoList', JSON.stringify(this.data));
     this.displayTask(task);
   }
 
@@ -64,7 +63,7 @@ class ToDoList {
   updateList(taskObj) {
     const taskIndex = this.data.findIndex((task) => task.index === taskObj.index);
     this.data[taskIndex] = taskObj;
-    localStorage.setItem('toDoList', JSON.stringify(this.data));//local storage function
+    localStorage.setItem('toDoList', JSON.stringify(this.data));
   }
 }
 

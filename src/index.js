@@ -12,7 +12,7 @@ document.querySelector('#add-item').addEventListener('keypress', (e) => {
     const description = document.getElementById('add-item');
     const task = toDoList.createTask(description.value);
     toDoList.addTask(task);
-    localStorage.setItem('toDoList', JSON.stringify(toDoList.data));//local storage function
+    localStorage.setItem('toDoList', JSON.stringify(toDoList.data));
     description.value = '';
   }
 });
@@ -21,7 +21,7 @@ document.querySelector('#delete-all').addEventListener('click', () => {
   toDoList.data.forEach((task) => {
     if (task.completed) {
       toDoList.data = removeItem(task, toDoList.data);
-      localStorage.setItem('toDoList', JSON.stringify(toDoList.data));//local storage function
+      localStorage.setItem('toDoList', JSON.stringify(toDoList.data));
       const taskList = document.getElementById('main-list');
       taskList.innerHTML = '';
       toDoList.displayList();
@@ -30,7 +30,7 @@ document.querySelector('#delete-all').addEventListener('click', () => {
 });
 
 window.onload = () => {
-  toDoList.data = JSON.parse(localStorage.getItem('toDoList' || '[]'));//get list function
+  toDoList.data = JSON.parse(localStorage.getItem('toDoList' || '[]'));
   if (toDoList.data === null) {
     toDoList.data = [];
     return;
