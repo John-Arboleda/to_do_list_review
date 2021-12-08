@@ -1,70 +1,36 @@
+import './reset.css';
+import './style.css';
+import ToDoList from './toDo.js';
 import handlers from './handlers.js';
 
-class ToDoList {
-  constructor() {
-    this.data = [];
-  }
+const toDoList = new ToDoList();
 
-  createTask(description) {
-    const task = {};
-    task.description = description;
-    task.completed = false;
-    if (this.data.length > 0) {
-      const lastItem = this.data[this.data.length - 1];
-      const lastIndex = lastItem.index;
-      task.index = lastIndex + 1;
-    } else {
-      task.index = 1;
+document.querySelector('#add-item').addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    const description = document.getElementById('add-item');
+    const task = toDoList.createTask(description.value);
+    toDoList.addTask(task);
+    handlers.saveLocalSorage(toDoList.data);
+    description.value = '';
+  }
+});
+
+document.querySelector('#delete-all').addEventListener('click', () => {
+  toDoList.data.forEach((task) => {
+    if (task.completed) {
+      toDoList.data = removeItem(task, toDoList.data);
+      handlers.saveLocalSorage(toDoList.data);
+      handlers.taskList.innerHTML = '';
+      toDoList.displayList();
     }
-    return task;
-  }
+  });
+});
 
-  /* eslint-disable-next-line class-methods-use-this */
-  displayTask(taskObj) {
-    handlers.newTask(taskObj);
-    const checkbox = document.querySelector(`#cont${taskObj.index} .checkbox`);
-    const self = this;
-    checkbox.addEventListener('change', function () {
-      if (this.checked) {
-        taskObj.completed = true;
-      } else {
-        taskObj.completed = false;
-      }
-      self.updateList(taskObj);
-    });
-    const deleteBtn = document.querySelector(`#cont${taskObj.index} div button`);
-    deleteBtn.addEventListener('click', () => {
-      self.data = handlers.removeItem(taskObj, self.data);
-      self.displayList();
-    });
-    const inputDescription = document.querySelector(`#cont${taskObj.index} .input-description`);
-    inputDescription.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        taskObj.description = inputDescription.value;
-        self.updateList(taskObj);
-        handlers.taskList.innerHTML = '';
-        self.displayList();
-      }
-    });
+window.onload = () => {
+  toDoList.data = JSON.parse(localStorage.getItem('toDoList' || '[]'));//get list function
+  if (toDoList.data === null) {
+    toDoList.data = [];
+    return;
   }
-
-  addTask(task) {
-    this.data.push(task);
-    localStorage.setItem('toDoList', JSON.stringify(this.data));
-    this.displayTask(task);
-  }
-
-  displayList() {
-    this.data.forEach((task) => {
-      this.displayTask(task);
-    });
-  }
-
-  updateList(taskObj) {
-    const taskIndex = this.data.findIndex((task) => task.index === taskObj.index);
-    this.data[taskIndex] = taskObj;
-    localStorage.setItem('toDoList', JSON.stringify(this.data));
-  }
-}
-
-export default ToDoList;
+  toDoList.displayList();
+};
