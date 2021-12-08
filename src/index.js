@@ -18,7 +18,7 @@ document.querySelector('#add-item').addEventListener('keypress', (e) => {
 document.querySelector('#delete-all').addEventListener('click', () => {
   toDoList.data.forEach((task) => {
     if (task.completed) {
-      toDoList.data = removeItem(task, toDoList.data);
+      toDoList.data = handlers.removeItem(task, toDoList.data);
       handlers.saveLocalSorage(toDoList.data);
       handlers.taskList.innerHTML = '';
       toDoList.displayList();
@@ -27,7 +27,7 @@ document.querySelector('#delete-all').addEventListener('click', () => {
 });
 
 window.onload = () => {
-  toDoList.data = JSON.parse(localStorage.getItem('toDoList' || '[]'));//get list function
+  toDoList.data = JSON.parse(localStorage.getItem('toDoList' || '[]'));// get list function
   if (toDoList.data === null) {
     toDoList.data = [];
     return;
