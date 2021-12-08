@@ -1,5 +1,4 @@
 export default (() => {
-
   const taskList = document.getElementById('main-list');
 
   function newTask(taskObj) {

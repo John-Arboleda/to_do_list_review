@@ -10,16 +10,13 @@ class ToDoList {
     task.description = description;
     task.completed = false;
     if (this.data.length > 0) {
-      const lastItem = this.data[this.data.length - 1];
-      const lastIndex = lastItem.index;
-      task.index = lastIndex + 1;
+      task.index = this.data.length + 1;
     } else {
       task.index = 1;
     }
     return task;
   }
 
-  /* eslint-disable-next-line class-methods-use-this */
   displayTask(taskObj) {
     handlers.newTask(taskObj);
     const checkbox = document.querySelector(`#cont${taskObj.index} .checkbox`);
@@ -42,7 +39,6 @@ class ToDoList {
       if (e.key === 'Enter') {
         taskObj.description = inputDescription.value;
         self.updateList(taskObj);
-        //localStorage.setItem('toDoList', JSON.stringify(self.data));//local storage function
         handlers.taskList.innerHTML = '';
         self.displayList();
       }
@@ -51,7 +47,7 @@ class ToDoList {
 
   addTask(task) {
     this.data.push(task);
-    localStorage.setItem('toDoList', JSON.stringify(this.data));//local storage function
+    handlers.saveLocalSorage(this.data);
     this.displayTask(task);
   }
 
@@ -64,7 +60,7 @@ class ToDoList {
   updateList(taskObj) {
     const taskIndex = this.data.findIndex((task) => task.index === taskObj.index);
     this.data[taskIndex] = taskObj;
-    localStorage.setItem('toDoList', JSON.stringify(this.data));//local storage function
+    handlers.saveLocalSorage(this.data);
   }
 }
 
